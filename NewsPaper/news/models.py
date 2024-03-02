@@ -8,13 +8,13 @@ class Author(models.Model):
     ratingAuthor = models.SmallIntegerField(default=0)
 
     def update_rating(self):
-        postRat = self.post_set.aggregate(Sum(postRating='rating'))
+        postRat = self.post_set.aggregate(postRating=Sum('rating'))
         pRat = 0
         pRat += postRat.get('postRating')
 
-        commentRat = self.authorUser.comment_set.aggregate(Sum(postRating='rating'))
+        commentRat = self.authorUser.comment_set.aggregate(commentRating=Sum('rating'))
         cRat = 0
-        cRat += commentRat.get('postRating')
+        cRat += commentRat.get('commentRating')
 
         self.ratingAuthor = pRat * 3 + cRat
         self.save()
@@ -54,8 +54,7 @@ class Post(models.Model):
 
 class PostCategory(models.Model):
     postThrough = models.ForeignKey(Post, on_delete=models.CASCADE)
-    categoryThrough = models.ForeignKey(Post, on_delete=models.CASCADE)
-
+    categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 
 class Comment(models.Model):
@@ -63,11 +62,12 @@ class Comment(models.Model):
     commentUser = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     dateCreation = models.DateTimeField(auto_now_add=True)
-    rating = rating = models.SmallIntegerField(default=0)
-
+    rating = models.SmallIntegerField(default=0)
 
     def like(self):
-        pass
+        self.rating += 1
+        self.save()
 
     def dislike(self):
-        pass
+        self.rating -= 1
+        self.save()
