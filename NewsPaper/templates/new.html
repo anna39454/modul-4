@@ -1,0 +1,33 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+<!-- Название у нас будет New -->
+{% block title %}
+New
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим новость, идентификатор которого был передан в url -->
+{% block content %}
+<h1>{{ new }}</h1>
+<h3>{{ time_now|date:'M d Y' }}</h3>
+   <hr>
+   {% if new %}
+       <table> <!-- Начинаем описывать таблицу -->
+           <tr>
+               <td>  Заголовок  </td>
+               <td>Дата публикации </td>
+               <td> Краткое содержание </td>
+           </tr>
+
+
+           <tr>
+               <td>{{ new.tile }}</td>
+               <td>{{ new.dateCreation|date:'d M Y' }}</td>
+               <td>{{ new.text|truncatechars:15 }}</td>
+           </tr>
+
+
+       </table>
+     {% endif %}
+
+{% endblock content %}
