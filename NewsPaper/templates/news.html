@@ -46,7 +46,7 @@ news
                 в следующем столбце описание, и т.д.  -->
                <td>{{ new.tile|censor }}</td>
                <td>{{ new.dateCreation }}</td>
-               <td>{{ new.text|truncatechars:15 }}</td>
+               <td>{{ new.text|censor|truncatechars:15 }}</td>
 
            </tr>
            {% endfor %}
