@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'news',
     'django.contrib.flatpages',
+    'django_filters',   #чтобы получить доступ к фильтрам в приложении
 ]
 SITE_ID = 1
 MIDDLEWARE = [
