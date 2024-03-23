@@ -41,6 +41,8 @@ news
                <td> <!-- Добавляем ячейку в строку --> Заголовок  </td>
                <td> <!-- Добавляем ещё одну ячейку в строку и так далее --> Дата публикации </td>
                <td> Краткое содержание </td>
+               <td> Тип поста </td>
+
            </tr> <!-- Не забываем закрыть HTML-тег строки -->
 
 
@@ -57,6 +59,8 @@ news
                <td>{{ new.tile|censor }}</td>
                <td>{{ new.dateCreation|date:'d M Y' }}</td>
                <td>{{ new.text|censor|truncatechars:15 }}</td>
+               <td>{{ new.Category_choices }}</td>
+
 
            </tr>
            {% endfor %}
@@ -65,38 +69,24 @@ news
    {% else %}
        <h2>Новостей нет!</h2>
    {% endif %}
-{# Добавляем пагинацию на страницу #}
 
-   {# Информация о предыдущих страницах #}
    {% if page_obj.has_previous %}
-
-
-
-        {# Для каждой ссылки пагинации указываем обработку через новый тег #}
+       {# Для каждой ссылки пагинации указываем обработку через новый тег #}
        <a href="?{% url_replace page=1 %}">1</a>
        {% if page_obj.previous_page_number != 1 %}
            ...
-           <a href="?{% url_replace page=page_obj.previous_page_number % }">{{ page_obj.previous_page_number }}</a>
+           <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
        {% endif %}
    {% endif %}
 
-   {# Информация о текущей странице #}
    {{ page_obj.number }}
 
-   {# Информация о следующих страницах #}
    {% if page_obj.has_next %}
-       <a href="?{% url_replace page=page_obj.next_page_number% }">{{ page_obj.next_page_number }}</a>
+       <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
        {% if paginator.num_pages != page_obj.next_page_number %}
            ...
-           <a href="?{% url_replace page=page_obj.paginator.num_pages }">{{ page_obj.paginator.num_pages }}</a>
+           <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
        {% endif %}
    {% endif %}
 
-
-
 {% endblock content %}
-
-
-<body>
-{{ flatpage.content }}
-</body>
