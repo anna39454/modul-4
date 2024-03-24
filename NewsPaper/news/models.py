@@ -37,7 +37,7 @@ class Post(models.Model):
         (News, 'Новость'),
         (Article, 'Статья'),
     )
-    categoryTape = models.CharField(max_length=2, choices=Category_choices,default=Article)
+    categoryTape = models.CharField(max_length=2, choices=Category_choices,default=News)
     dateCreation = models.DateTimeField(auto_now_add=True)
     postCategory = models.ManyToManyField(Category, through="PostCategory")
     tile = models.CharField(max_length=128)

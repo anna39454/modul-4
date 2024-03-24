@@ -13,6 +13,6 @@ class PostForm(forms.ModelForm):
        fields = [
            'tile',
            'text',
-           'categoryTape',
+           #'categoryTape',
            'author',
        ]

@@ -59,7 +59,7 @@ news
                <td>{{ new.tile|censor }}</td>
                <td>{{ new.dateCreation|date:'d M Y' }}</td>
                <td>{{ new.text|censor|truncatechars:15 }}</td>
-               <td>{{ new.Category_choices }}</td>
+               <td>{{ new.get_categoryTape_display }}</td>
 
 
            </tr>
