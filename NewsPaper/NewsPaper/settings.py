@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'news',
     'django.contrib.flatpages',
     'django_filters',   #чтобы получить доступ к фильтрам в приложении
+
+
+
 ]
 SITE_ID = 1
 MIDDLEWARE = [
@@ -129,4 +132,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
+
+LOGIN_REDIRECT_URL = "/news"
 

@@ -24,6 +24,8 @@ urlpatterns = [
     # Делаем так, чтобы все адреса из нашего приложения (simpleapp/urls.py)
     # подключались к главному приложению с префиксом products/.
     path('news/', include('news.urls')),
+
+    path('accounts/', include('django.contrib.auth.urls')), #Django скажет, как обрабатывать запросы от пользователей по ссылкам, которые начинаются с /accounts/.
 ]
 
 

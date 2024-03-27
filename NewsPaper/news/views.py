@@ -7,6 +7,9 @@ from .models import Post
 from .search import PostFilter
 from .forms import PostForm
 
+from django.contrib.auth.decorators import login_required #для Декоратора login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 class NewsList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -72,7 +75,8 @@ class NewsDetail(DetailView):
 
 # Добавляем представление для создания товара.
 
-class PostCreate(CreateView):
+class PostCreate(LoginRequiredMixin, CreateView):
+    raise_exception = True  # настроиkb выдачу ошибки с 403 кодом, для не авторизированных пользователей
     # Указываем нашу разработанную форму
     form_class = PostForm
     # модель товаров
@@ -82,6 +86,7 @@ class PostCreate(CreateView):
     success_url = '/news/'
 
     def form_valid(self, form):
+
         article = form.save(commit=False)
         if self.request.path == 'news/create/':
             article.Category_choices = 'NW'
@@ -101,3 +106,9 @@ class ProductDelete(DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = '/news/'
+
+
+
+
+
+
