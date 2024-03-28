@@ -42,9 +42,17 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'django_filters',   #чтобы получить доступ к фильтрам в приложении
 
-
-
+# настройка для пакета allauth
+    #  3 обязательных приложения allauth
+# и одно, которое отвечает за выход через Yandex
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.yandex',
 ]
+
+
+
 SITE_ID = 1
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -54,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware', # настройка для пакета allauth
 ]
 
 ROOT_URLCONF = 'NewsPaper.urls'
@@ -69,10 +78,21 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+# настройка для пакета allauth
+                'django.template.context_processors.request',
             ],
         },
     },
 ]
+
+# бэкенды аутентификации
+# настройка для пакета allauth
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
 
 WSGI_APPLICATION = 'NewsPaper.wsgi.application'
 
@@ -135,3 +155,8 @@ STATICFILES_DIRS = [
 
 LOGIN_REDIRECT_URL = "/news"
 
+ACCOUNT_EMAIL_REQUIRED = True #поле email
+ACCOUNT_UNIQUE_EMAIL = True #  является обязательным и уникальным
+ACCOUNT_USERNAME_REQUIRED = False #наоборот, — говорит, что username необязательный
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none' #верификация почты отсутствует

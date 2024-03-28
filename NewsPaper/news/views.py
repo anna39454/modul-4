@@ -7,7 +7,8 @@ from .models import Post
 from .search import PostFilter
 from .forms import PostForm
 
-from django.contrib.auth.decorators import login_required #для Декоратора login_required
+
+#from django.contrib.auth.decorators import login_required #для Декоратора login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -106,7 +107,6 @@ class ProductDelete(DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = '/news/'
-
 
 
 
