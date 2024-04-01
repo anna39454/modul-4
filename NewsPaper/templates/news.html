@@ -72,7 +72,7 @@ news
                     <a href="{% url 'post_update' pk=new.id %}">Изменить</a>
                     {% endif %}
                     {% if perms.simpleapp.add_post %}
-                    <a href="{% url 'post_create' new.id %}">Создать пост</a>
+                    <a href="{% url 'post_create' %}">Создать пост</a>
                     {% endif %}
                 </td>
 
