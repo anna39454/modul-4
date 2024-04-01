@@ -77,7 +77,8 @@ class NewsDetail(DetailView):
 # Добавляем представление для создания товара.
 
 class PostCreate(LoginRequiredMixin, CreateView):
-    raise_exception = True  # настроиkb выдачу ошибки с 403 кодом, для не авторизированных пользователей
+    #raise_exception = True  # настроиkb выдачу ошибки с 403 кодом, для не авторизированных пользователей
+    permission_required = ('news.add_post',)
     # Указываем нашу разработанную форму
     form_class = PostForm
     # модель товаров
@@ -96,14 +97,16 @@ class PostCreate(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 # Добавляем представление для изменения товара.
-class PostUpdate(UpdateView):
+class PostUpdate(LoginRequiredMixin, UpdateView):
+    permission_required = ('news.change_post',)
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
     success_url = '/news/'
 
 # Представление удаляющее пост.
-class ProductDelete(DeleteView):
+class ProductDelete(LoginRequiredMixin, DeleteView):
+    permission_required = ('news.delete_post',)
     model = Post
     template_name = 'post_delete.html'
     success_url = '/news/'

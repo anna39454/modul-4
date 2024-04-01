@@ -43,6 +43,11 @@ news
                <td> Краткое содержание </td>
                <td> Тип поста </td>
 
+               {# Условие получается составным. #}
+               {% if perms.News.change_post or perms.News.add_post %}
+               <td>Действия</td>
+               {% endif %}
+
            </tr> <!-- Не забываем закрыть HTML-тег строки -->
 
 
@@ -60,6 +65,16 @@ news
                <td>{{ new.dateCreation|date:'d M Y' }}</td>
                <td>{{ new.text|censor|truncatechars:15 }}</td>
                <td>{{ new.get_categoryTape_display }}</td>
+
+               <td>
+                    {# А здесь доступ для каждой ссылки теперь будем проверять отдельно #}
+                    {% if perms.simpleapp.change_post %}
+                    <a href="{% url 'post_update' pk=new.id %}">Изменить</a>
+                    {% endif %}
+                    {% if perms.simpleapp.add_post %}
+                    <a href="{% url 'post_create' new.id %}">Создать пост</a>
+                    {% endif %}
+                </td>
 
 
            </tr>

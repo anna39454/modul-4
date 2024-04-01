@@ -153,10 +153,12 @@ STATICFILES_DIRS = [
     BASE_DIR / "static"
 ]
 
-LOGIN_REDIRECT_URL = "/news"
+LOGIN_REDIRECT_URL = "/accounts/login/"
 
 ACCOUNT_EMAIL_REQUIRED = True #поле email
 ACCOUNT_UNIQUE_EMAIL = True #  является обязательным и уникальным
 ACCOUNT_USERNAME_REQUIRED = False #наоборот, — говорит, что username необязательный
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none' #верификация почты отсутствует
+
+ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
