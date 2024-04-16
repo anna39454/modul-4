@@ -9,7 +9,7 @@ from django_apscheduler import util
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
 
-from simpleapp.models import Post
+from news.models import Post
 
 logger = logging.getLogger(__name__)
 
