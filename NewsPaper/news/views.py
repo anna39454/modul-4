@@ -22,6 +22,8 @@ from django.shortcuts import get_object_or_404
 #from django.contrib.auth.decorators import login_required #для Декоратора login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from .tasks import send_mail_task
+
 
 class NewsList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -103,8 +105,12 @@ class PostCreate(LoginRequiredMixin, CreateView):
         article = form.save(commit=False)
         if self.request.path == 'news/create/':
             article.Category_choices = 'NW'
+            article.save()
+            send_mail_task.delay(article.pk)
         else:
             article.Category_choices = 'AR'
+            article.save()
+            send_mail_task.delay(article.pk)
         return super().form_valid(form)
 
 # Добавляем представление для изменения товара.
