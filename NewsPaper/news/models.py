@@ -58,8 +58,9 @@ class Post(models.Model):
     def __str__(self):
         return f'{self.tile.title()}: {self.text[:20]}'
 
-    #def get_absolute_url(self):
-     #   return reverse('news', args=[str(self.id)])
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
+
 
 
 

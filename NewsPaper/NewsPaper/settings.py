@@ -102,13 +102,23 @@ WSGI_APPLICATION = 'NewsPaper.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'USER': 'db.sqlite3',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    },
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -195,3 +205,120 @@ CACHES = {
         'TIMEOUT': 60*5
     }
 }
+#добавили кэширование через файловую систему
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'cache_files'), # Указываем, куда будем сохранять кэшируемые файлы! Не забываем создать папку cache_files внутри папки с manage.py!
+    }
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'style': '{',
+    'loggers': {
+        'django': {
+            'handlers': ['console_debug', 'console_warning', 'console_error', 'info'],  # Регистратор django отправляет все сообщения на консоль
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['errors', 'mail_admins', ],
+            'propagate': True,
+        },
+        'django.server': {
+            'handlers': ['errors', 'mail_admins'],
+            'propagate': True,
+        },
+        'django.template': {
+            'handlers': ['errors'],
+            'propagate': True,
+        },
+        'django.db.backends': {
+            'handlers': ['errors'],
+            'propagate': True,
+        },
+        'django.security.DisallowedHost': {
+            'handlers': ['security'],
+            'propagate': False,
+        },
+    },
+#
+    # обработчики
+    'handlers': {
+        'console_debug': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true', ],
+            'class': 'logging.StreamHandler',
+            'formatter': 'for_debug'
+        },
+        'console_warning': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true', ],
+            'class': 'logging.StreamHandler',
+            'formatter': 'for_warning'
+        },
+        'console_error': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true', ],
+            'class': 'logging.StreamHandler',
+            'formatter': 'for_error_critical'
+        },
+        'info': {
+            # должны выводиться сообщения уровня INFO и выше только с указанием времени, уровня логирования, модуля, в котором возникло сообщение (аргумент module) и само сообщение
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'for_info',
+            'filters': ['require_debug_false'],
+        },
+        'errors': {
+            # В сообщении указывается время, уровень логирования, само сообщение, путь к источнику сообщения и стэк ошибки
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'errors.log',
+            'formatter': 'for_error_critical',
+        },
+        'security': {
+            # должны попадать только сообщения, связанные с безопасностью, а значит только из логгера django.security.
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': 'security.log',
+            'formatter': 'for_info',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': "django.utils.log.AdminEmailHandler",
+            'formatter': 'for_warning',
+            'filters': ['require_debug_false'],
+        },
+     },
+
+    'formatters': {
+        # вывод сообщений в консоль
+        'for_debug': {
+            'format': '%(asctime)s %(levelname)s %(message)s',
+        },
+        'for_warning': {
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s',
+        },
+        'for_error_critical': {
+            'format': '%(asctime)s %(levelname)s %(message)s %(pathname)s %(exc_info)s',
+        },
+        'for_info': {
+            'format': '%(asctime)s %(levelname)s %(module)s %(message)s',
+        },
+    },
+
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+
+        },
+    }
+
